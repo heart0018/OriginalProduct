@@ -56,4 +56,5 @@
 --
 
 ※各画像はimgディレクトリを参照してください
-システム構成図における、技術選定の理由はこちらに記載してあります→ /home/haruto/OriginalProdact/Technology selection.md
+
+- システム構成図における、技術選定の理由はこちらに記載してあります→ ![技術選定の理由](/home/haruto/OriginalProdact/Technology selection.md)
