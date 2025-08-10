@@ -56,5 +56,6 @@
 --
 
 ※各画像はimgディレクトリを参照してください
+※
 
 - システム構成図における、技術選定の理由はこちらに記載してあります→ [Technology selection.md](https://github.com/heart0018/OriginalProduct/blob/74913325607f598004e5189506f1706b7bfbe4b4/document/Technology%20selection.md)

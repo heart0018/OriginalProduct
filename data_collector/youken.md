@@ -1,0 +1,656 @@
+## 🎯 アプリの目的
+
+「なんとなく開いたら、なんとなくやること・行く場所が決まる」
+
+決まらなくても良い。スワイプするだけでも楽しい、意思決定のきっかけを与えるWebサービス
+
+---
+
+## 提供価値・主要機能
+
+- ランダムで行動・場所を提案
+- スワイプで直感的に選択（YES/NO/決定）
+- ジャンル指定・気分指定も可能
+- **現在地からの距離（Km）を表示**
+- 保存リスト（行きたい！・また今度）から再確認＆外部リンクに遷移（Google Maps等）
+
+---
+
+## 想定ユーザー
+
+| 項目 | 内容 |
+| --- | --- |
+| 年齢層 | 10代後半〜20代半ば |
+| 状況 | 暇、でも何かしたい／1人行動 |
+| 特性 | 気分屋・受動的・決断が苦手OK |
+| 利用時 | 休日・昼休み・放課後・帰宅後など |
+
+---
+
+## 利用フロー
+
+1. **トップ画面でカテゴリ選択**
+
+    「🍽 食べる」「🛍 出かける」
+
+2. **「出かける」選択時は気分選択**
+
+    「リラックスしたい」or「遊びたい」or「どっちも」
+
+3. **選択に応じてカード提案画面へ**
+
+    YES/NOスワイプで決定
+
+4. 「ここへ行く！」ボタンでGoogle Maps等へ遷移
+
+---
+
+## 機能分類
+
+### 1. **ログイン機能**
+
+- Google OAuth 2.0による認証
+
+### 2. **地域選択**
+
+- 7エリア（北海道・東北・関東・中部・近畿・中国四国・九州沖縄）＋全エリア
+
+### 3. **都道府県ごとのデータバランス**
+
+- 地域ごと、県ごとに均等に提案データを割り振り
+
+    ※大都市・データ不足県の調整あり
+
+
+### 4. **気分選択画面**
+
+- **「出かける」内で**
+
+    - リラックスする
+
+    - 遊ぶ
+
+    - どっちも！
+
+
+### 5. **ジャンルごとの提案内容**
+
+- **出かける/リラックス**（例：温泉、公園、サウナ、カフェ、散歩コース）
+- **出かける/遊ぶ**（例：ゲームセンター、ボウリング・カラオケ、脱出ゲーム、バッティングセンター、シーシャ、飲み屋）
+- **食べる**（例：洋食、和食、中華、Bar、居酒屋）
+
+---
+
+### 6. **カード表示項目**
+
+- タイトル（店名・スポット名）
+- 画像（サムネイル、なければデフォルト画像）
+- 説明文（なければ空欄）
+- ジャンル／タグ（※初期は手動/静的のみ）
+- 地域・都道府県
+- **現在地からの距離（Km）**
+- 評価（⭐️4.2等）・評価件数（任意）
+
+---
+
+### 7. **スワイプ＆保存リスト**
+
+- YES/NO/決定（スワイプUI）
+- 保存リスト（行きたい！・また今度）
+- 最大保存数（行きたい100件、また今度30件、超過時は古い順削除）
+- リスト内から「ここへ行く！」ボタンで外部リンク（Google Maps等）
+
+---
+
+### 8. **ナビゲーションバー**
+
+- 地域選択
+- 食べる/飲む
+- でかける（リラックス・遊ぶ）
+- スワイプ履歴（行きたい！/また今度）
+
+---
+
+### 9. **管理・拡張性**
+
+- **GPTタグ生成機能はアップデート時に導入検討**（初期リリースでは未実装）
+- データ追加のみの場合はDB更新のみで反映
+
+---
+
+## 非機能要件（主要のみ）
+
+- Google OAuth認証（パスワード保存しない）
+- HTTPS通信のみ許可
+- APIキー等は.env管理、コード直書き禁止
+- Railsバックエンド側でCORS対応
+- AWSでデプロイ、RDSバックアップ月1
+
+---
+
+## 技術構成（変更なし）
+
+| 層 | 使用技術 |
+| --- | --- |
+| フロント | React（Tinder UIライブラリ等） |
+| バックエンド | Rails |
+| DB | MySQL |
+| 外部API | Google Places API、TMDB API |
+| 認証 | Google OAuth 2.0 |
+| デプロイ | AWS |
+
+---
+
+### （補足）
+
+- 「休む（ドラマ・アニメ）」ジャンルは今回**削除**
+- タグ自動生成（GPT API等）は**初期リリースでは実装しない**
+- **カード情報には現在地からの距離（Km）を必ず含める**こと
+
+| 層 | 使用技術 |
+| --- | --- |
+| フロント | React（＋Tinder UIライブラリ）  |
+| バックエンド |  Rails |
+| DB | MYSQL |
+| 外部API | Google Places API, TMDB API,
+GPT-4o |
+| 認証 | Google OAuth 2.0 |
+| デプロイ | AWS |
+
+---
+
+[学ぶべき主要技術スタック、サービス](https://www.notion.so/21c88f4c7b3a802b8288ee808b3c41e0?pvs=21)
+
+[API利用の方針まとめ](https://www.notion.so/API-22288f4c7b3a8066ba2fe5b24732a567?pvs=21)
+
+[✅ 要件定義（2025年7月修正版）](https://www.notion.so/2025-7-22588f4c7b3a8000a04ec27cc9f0d879?pvs=21)
+
+[各フロー図面](https://www.notion.so/22c88f4c7b3a805d8279d395ae2cb5f7?pvs=21)
+
+[テーブル定義書](https://www.notion.so/22e88f4c7b3a80a0a12de37e83ce3f9c?pvs=21)
+
+[画面](https://www.notion.so/23088f4c7b3a80b790d7c53fd9cb202c?pvs=21)
+
+[デモサービス使用者のフィードバック](https://www.notion.so/23188f4c7b3a802f9d98d3dae676d2fe?pvs=21)
+
+# 🎯 サービスが解決する課題（問題提起）
+
+---
+
+## **1. 選択肢が多すぎて“決められない”問題**
+
+- 「何しようかな」「どこ行こうかな」と悩み、行動が決まらないまま時間だけ過ぎてしまう
+- 検索すれば山ほど情報は出るが、**多すぎて逆に選べない・面倒**
+- 予定が決まらない、友達や恋人・家族とどこ行くか毎回悩む
+- 本当は外出や食事をしたいが、**調べること自体がだるい**ので“動かない”で終わることも多い
+
+---
+
+## **2. 「決めるのが面倒」「考えたくない」状態の人が大多数**
+
+- 暇なとき・ゴロゴロしてるとき、「何となく眺めるだけ」で済ませたい
+- “自分で調べて、比較して…”が苦手、あるいは面倒に感じる
+- つい「何も決めずに終わる」休日や空白時間ができてしまう
+
+---
+
+## **3. “行動のきっかけ”が得られず、ただ時間が流れる**
+
+- 気になる場所ややりたいことを“思いつけない”・“きっかけがない”
+- SNSや動画アプリは暇つぶしにはなるが、「次の行動」につながることが少ない
+
+---
+
+# 🚀 サービスが提供する価値（バリュープロポジション）
+
+---
+
+## **1. 「調べる」「決める」を“まるごと省略”できる**
+
+- アプリを開くだけで、今いる場所・気分にあった候補が**ランダム＆直感的に提案**される
+- YES/NOスワイプで「いいな」と思ったものをどんどん絞れる＝**直感でサクサク決断できる**
+- ジャンルや地域、気分を指定するだけで「調べる手間」ゼロ
+- たとえ決断しなくても、「流し見」だけでも楽しい体験になる
+
+---
+
+## **2. “行動のきっかけ”や“ヒント”が自然に溜まる**
+
+- スワイプ操作だけで“行きたいリスト”が勝手に溜まる
+- 「あとで見返す」ことで**空き時間や休日、即決したい場面でもすぐ行動につなげられる**
+- 決めるのが苦手な人も、ただスワイプしてるだけで**次の行動や予定の候補が蓄積される**
+
+---
+
+## **3. ダラダラ消費 × 決断サポートの二軸が共存する新体験**
+
+- 「何となく流し見」→普段知りえなかったスポットやアイデアとの出会いがある
+- 「予定決め・候補探し」→“履歴・保存リスト”から**ピックアップするだけでOK**
+- 使い方・価値が「シーンごと・人ごと」に変化＝**誰でも使えて、どんな時でも役立つ**
+
+---
+
+## **4. 使うだけで“アクションリスト”が自然に増えていく**
+
+- 「何もしてない休日」でも“とりあえず”アクションのきっかけが残る
+- スワイプするたび、行きたい場所・やりたいことがリストに積み重なる
+- 時間の浪費で終わらず、「何か行動できる自分」に近づける
+
+
+## . **ログイン機能**
+
+- Google OAuth 2.0によるログイン
+
+---
+
+## 2. **地域選択**
+
+- 住んでいる地域を7エリアから選択
+
+    - 北海道
+
+    - 東北
+
+    - 関東
+
+    - 中部
+
+    - 近畿
+
+    - 中国・四国
+
+    - 九州
+
+    - すべての地域
+
+
+---
+
+## 3. **都道府県ごとのデータバランス配慮**
+
+- 地域選択後、**提案データはその地域内の都道府県ごとにできるだけ均等に割り振る**
+    - 例：関東（東京・神奈川・千葉・埼玉・茨城・栃木・群馬）→ 合計100件なら各県約14件ずつ
+    - ※主要都市・大都市は多め、他県は最低ラインを担保など柔軟に配分してOK
+- **データが不足する県は主要都市分で補完も可**
+
+---
+
+## 4. **気分選択画面**
+
+### 1) 「出かける」
+
+- 「リラックスする」「遊ぶ」「どっちも！」の3つのボタン
+    - 「どっちも！」は両方ジャンルからランダムに提案
+
+---
+
+### ■ 「リラックスする」を選択
+
+- 提案ジャンル（各地域×各ジャンルで**20件ずつ**、できるだけ都道府県で均等配分）
+    - 温泉
+    - 公園
+    - サウナ
+    - カフェ（動物カフェ含む）
+    - 散歩コース
+
+---
+
+### ■ 「遊ぶ」を選択
+
+- 提案ジャンル（各地域×各ジャンルで**20件ずつ**、できるだけ都道府県で均等配分）
+    - ゲームセンター（アミューズメント施設）
+    - ボウリング／カラオケ
+    - 脱出ゲーム・謎解きスポット
+    - バッティングセンター
+    - シーシャ
+    - 飲み屋（大衆居酒屋など）
+
+---
+
+### 2) 「食べる／飲む」
+
+- ジャンルごと（各地域×各ジャンルで**20件ずつ**、できるだけ都道府県で均等配分）
+    - 洋食
+    - 和食
+    - 中華
+    - Bar
+    - 居酒屋（個人店・小規模）
+
+---
+
+## **合計データ件数**
+
+- リラックスする：**700件**
+- 遊ぶ：**840件**
+- 食べる／飲む：**700件**
+- **合計：2,240件**
+
+---
+
+### ■ **データ収集・整備**
+
+- Python＋requestsライブラリでAPIリクエスト（Google Places API対応）
+- タグ自動生成（GPT API）は**アップデート時に導入検討。初期リリース時は静的/手動**
+
+---
+
+# 🗂️ スワイプ済み保存リスト（マイリスト・履歴）画面 仕様
+
+---
+
+## 1. **画面の役割**
+
+- ユーザーがスワイプ操作（行きたい！／また今度）で保存したカードを一覧で見返し・整理できるページ
+
+---
+
+## 2. **画面レイアウト**
+
+- 1画面に**3列×3行（9件）ずつカード表示**
+- 下部にページ切り替えボタン（ページネーション）あり
+
+---
+
+## 3. **リストの種類・上限**
+
+- **「行きたい！」リスト（likeForm）**
+    - 最大100件保存可能
+    - 100件超の場合、古い順に自動削除
+- **「また今度」リスト（BudForm）**
+    - 最大30件保存可能
+    - 30件超の場合、古い順に自動削除
+
+---
+
+## 4. **カード要素・含める情報**
+
+- **画像（サムネイル）**（なければデフォ画像）
+- **名前／タイトル**
+- **ジャンル**
+- **地域・都道府県**
+- **説明文（なければ無し）**
+- **評価（⭐️4.2など）・評価件数（例：112件）**
+- **現在地からの距離（Km）** ← ★追加必須項目
+
+---
+
+## 5. **カード内の操作ボタン**
+
+- **削除**（即削除/DBからも消去）
+- **また今度移動**（likeForm⇔BudForm間移動）
+- **ここに行く！**：Google Maps等の外部サービスへ自動遷移リンク
+
+---
+
+## 6. **主な画面フロー・使い方**
+
+1. メイン画面（スワイプUI）で「行きたい！／また今度」操作
+2. 保存リスト画面でまとめて一覧表示
+3. 必要に応じて「削除」「また今度移動」「ここに行く！」等操作
+4. 保存数上限超過時は古い順に自動削除
+
+---
+
+# メイン画面機能
+
+---
+
+## 🎯 基本機能
+
+- ランダムで行動/場所をカード形式で提案
+- 現在地からの距離（Km）をカード内に必ず表示
+
+---
+
+## 🧭 ナビゲーションバー
+
+- 地域選択（ドロップダウン）
+- 食べる/飲む
+- でかける（ドロップダウン）
+- swipeの履歴（ドロップダウン）
+
+---
+
+## 🃏 カードシステム
+
+- **スワイプUI**：左右スワイプでカード選別
+- 店舗情報表示：画像、店名、評価、説明、所在地、距離（Km）
+- アクションボタン：✗(nope), ♥(like), 「ここに行く！」
+- 「ここに行く！」選択でGoogle Maps等へ外部リンク
+
+---
+
+# 非機能要件
+
+---
+
+## 保守性
+
+- コード品質はPrettier等で自動チェック
+- ドキュメントはNotionで整理（要件、API仕様、テーブル設計等）
+- テストコードは機能ごとにこまめに作成
+- バージョン管理はGithub。main直コミット禁止（AIも活用）
+
+---
+
+## 運用性
+
+- データ追加のみ→DB更新のみで反映
+- コード変更時→GitHubにpush→自動デプロイ
+- DBバックアップは月1回（AWS RDS自動バックアップ）
+
+---
+
+## セキュリティ
+
+- パスワードは保存せずGoogle OAuthのみ
+- APIキー等は.envで管理し直書き禁止
+- React／RailsでCORSエラー対策
+
+---
+
+## 可用性・障害時
+
+- 障害時は「システム障害」等の画面表示
+
+---
+
+## 費用
+
+- サービス運用コストは月約6000円見積（AWS＋GPT API）
+
+---
+
+## その他
+
+- **休む（ドラマ/アニメ）ジャンルは削除**
+- **GPTタグ生成は初期リリースでは実装しない**
+- **全カード情報に「現在地からの距離（Km）」を必ず含める**
+
+
+## users テーブル
+
+| 項目名 | データ型 | 初期値 | NULL許可 | インデックス | 主キー | 外部キー | 備考 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| id | BIGINT AUTO_INCREMENT | なし | NOT NULL | UNIQUE | ○ |  |  |
+| google_id | VARCHAR(64) | なし | NOT NULL | UNIQUE |  |  | Google認証ID |
+| region | VARCHAR(16) | なし | NOT NULL |  |  |  | 地域コード |
+| created_at | DATETIME | CURRENT_TIMESTAMP | NOT NULL |  |  |  | 作成日時 |
+| updated_at | DATETIME | CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | NOT NULL |  |  | 更新日時 |  |
+
+---
+
+## cards テーブル
+
+| 項目名 | データ型 | 初期値 | NULL許可 | インデックス | 主キー | 外部キー | 備考 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| id | BIGINT AUTO_INCREMENT | なし | NOT NULL | UNIQUE | ○ |  |  |
+| type | VARCHAR(32) | NULL | YES |  |  |  | カード種別 |
+| title | VARCHAR(128) | なし | NOT NULL |  |  |  |  |
+| rating | FLOAT | 0.0 | NOT NULL |  |  |  | 平均評価 |
+| review_count | INT | 0 | NOT NULL |  |  |  | review_commentテーブルのINSERT/DELETE時にDBトリガーで自動更新（+1/-1）される。SQLは巻末参照 |
+| image_url | VARCHAR(256) | NULL | YES |  |  |  |  |
+| external_link | VARCHAR(256) | NULL | YES |  |  |  |  |
+| region | VARCHAR(16) | NULL | YES |  |  |  | カードの地域名 |
+| address | VARCHAR(128) | NULL | YES |  |  |  | 住所 |
+| created_at | DATETIME | CURRENT_TIMESTAMP | NOT NULL |  |  |  | 作成日時 |
+| updated_at | DATETIME | CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | NOT NULL |  |  | 更新日時 |  |
+
+---
+
+## user_cards テーブル
+
+| 項目名 | データ型 | 初期値 | NULL許可 | インデックス | 主キー | 外部キー | 備考 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| id | BIGINT AUTO_INCREMENT | なし | NOT NULL | UNIQUE | ○ |  |  |
+| user_id | BIGINT | なし | NOT NULL |  |  | users.id | ユーザーID |
+| card_id | BIGINT | なし | NOT NULL |  |  | cards.id | カードID |
+| status | ENUM('like', 'bud') | なし | NOT NULL |  |  |  | 行きたい！/また今度などの状態 |
+| created_at | DATETIME | CURRENT_TIMESTAMP | NOT NULL |  |  |  | 作成日時 |
+| updated_at | DATETIME | CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | NOT NULL |  |  | 更新日時 |  |
+|  |  |  |  |  |  |  | **user_id, card_id の組み合わせにUNIQUE制約あり** |
+
+---
+
+## tags テーブル
+
+| 項目名 | データ型 | 初期値 | NULL許可 | インデックス | 主キー | 外部キー | 備考 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| id | BIGINT AUTO_INCREMENT | なし | NOT NULL | UNIQUE | ○ |  |  |
+| name | VARCHAR(32) | なし | NOT NULL | UNIQUE |  |  | タグ名（ユニーク） |
+| created_at | DATETIME | CURRENT_TIMESTAMP | NOT NULL |  |  |  | 作成日時 |
+| updated_at | DATETIME | CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | NOT NULL |  |  | 更新日時 |  |
+
+---
+
+## card_tags テーブル
+
+| 項目名 | データ型 | 初期値 | NULL許可 | インデックス | 主キー | 外部キー | 備考 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| id | BIGINT AUTO_INCREMENT | なし | NOT NULL | UNIQUE | ○ |  |  |
+| card_id | BIGINT | なし | NOT NULL | INDEX |  | cards.id |  |
+| tag_id | BIGINT | なし | NOT NULL | INDEX |  | tags.id | タグマスタ参照 |
+| created_at | DATETIME | CURRENT_TIMESTAMP | NOT NULL |  |  |  | 作成日時 |
+| updated_at | DATETIME | CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | NOT NULL |  |  | 更新日時 |  |
+
+---
+
+## tag_score テーブル
+
+| 項目名 | データ型 | 初期値 | NULL許可 | インデックス | 主キー | 外部キー | 備考 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| id | BIGINT AUTO_INCREMENT | なし | NOT NULL | UNIQUE | ○ |  |  |
+| card_id | BIGINT | なし | NOT NULL | INDEX |  | cards.id |  |
+| tag_id | BIGINT | なし | NOT NULL | INDEX |  | tags.id | タグマスタ参照 |
+| score | INT | 0 | NOT NULL |  |  |  | タグの学習スコア |
+| created_at | DATETIME | CURRENT_TIMESTAMP | NOT NULL |  |  |  | 作成日時 |
+| updated_at | DATETIME | CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | NOT NULL |  |  | 更新日時 |  |
+
+---
+
+## review_comment テーブル
+
+| 項目名 | データ型 | 初期値 | NULL許可 | インデックス | 主キー | 外部キー | 備考 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| id | BIGINT AUTO_INCREMENT | なし | NOT NULL | UNIQUE | ○ |  |  |
+| comment | TEXT | NULL | YES |  |  |  | レビューコメント |
+| card_id | BIGINT | なし | NOT NULL | INDEX |  | cards.id | レビュー対象カード |
+| created_at | DATETIME | CURRENT_TIMESTAMP | NOT NULL |  |  |  | 作成日時 |
+| updated_at | DATETIME | CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | NOT NULL |  |  | 更新日時 |  |
+
+---
+
+## 【DBトリガー定義（SQL）】※cards.review_count自動連動
+
+```sql
+sql
+コピーする編集する
+-- レビュー追加時、review_countを+1
+CREATE TRIGGER review_comment_insert
+AFTER INSERT ON review_comment
+FOR EACH ROW
+UPDATE cards SET review_count = review_count + 1 WHERE id = NEW.card_id;
+
+-- レビュー削除時、review_countを-1
+CREATE TRIGGER review_comment_delete
+AFTER DELETE ON review_comment
+FOR EACH ROW
+UPDATE cards SET review_count = review_count - 1 WHERE id = OLD.card_id;
+
+```
+
+**備考：cards.review_countはreview_commentテーブルの増減に完全に自動連動
+トリガーは本番DBにも必ず設定**
+
+## database.ymlの設定
+```ruby
+# MySQL. Versions 5.6.4 and up are supported.
+#
+# Install the MySQL driver
+#   gem install mysql2
+#
+# Ensure the MySQL gem is defined in your Gemfile
+#   gem "mysql2"
+#
+# And be sure to use new-style password hashing:
+#   https://dev.mysql.com/doc/refman/5.7/en/password-hashing.html
+#
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: Haruto
+  password: password0405
+  socket: /var/run/mysqld/mysqld.sock
+
+development:
+  <<: *default
+  database: swipe_app_development
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: swipe_app_test
+
+# As with config/credentials.yml, you never want to store sensitive information,
+# like your database password, in your source code. If your source code is
+# ever seen by anyone, they now have access to your database.
+#
+# Instead, provide the password or a full connection URL as an environment
+# variable when you boot the app. For example:
+#
+#   DATABASE_URL="mysql2://myuser:mypass@localhost/somedatabase"
+#
+# If the connection URL is provided in the special DATABASE_URL environment
+# variable, Rails will automatically merge its configuration values on top of
+# the values provided in this file. Alternatively, you can specify a connection
+# URL environment variable explicitly:
+#
+#   production:
+#     url: <%= ENV["MY_APP_DATABASE_URL"] %>
+#
+# Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
+# for a full overview on how database connection configuration can be specified.
+#
+production:
+  primary: &primary_production
+    <<: *default
+    database: swipe_app_production
+    username: Haruto
+    password: password0405
+  cache:
+    <<: *primary_production
+    database: swipe_app_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: swipe_app_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: swipe_app_production_cable
+    migrations_paths: db/cable_migrate
+```
+

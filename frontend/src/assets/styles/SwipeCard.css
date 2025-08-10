@@ -1,0 +1,89 @@
+.swipe-card {
+  width: 320px;
+  height: 520px;
+  background: rgb(255, 255, 255);
+  border-radius: 16px;
+  box-shadow: 0 3px 6px rgba(167, 190, 241, 0.048);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-image {
+  width: 100%;
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  flex-shrink: 0;
+}
+
+.card-content {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-info {
+  flex-shrink: 0;
+}
+
+.place-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+  color: #333;
+  line-height: 1.2;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.rating {
+  font-size: 14px;
+  color: #666;
+}
+
+.address {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.reviews {
+  max-height: 150px;           /* 全体の高さ制限 */
+  overflow-y: auto;            /* これで上のスクロールバー */
+  padding-right: 4px;
+  /* display: flex; */
+  /* flex-direction: column; */
+  gap: 12px;
+  margin-bottom: 5px;
+}
+
+.review {
+  max-height: 120px;           /* 単体レビューの高さ制限 */
+  overflow-y: auto;            /* ここで下のスクロールバー */
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 3px solid #4CAF50;
+  margin-bottom: 20px;
+}
+
+.review-text {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #555;
+}
+
+.type {
+  font-size: 14px;
+  color: #666;
+}
