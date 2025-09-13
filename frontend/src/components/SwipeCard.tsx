@@ -20,14 +20,16 @@ const SwipeCard = ({ card }: Props) => {
           <h2 className="place-name">{card.title}</h2>
           <div className="details">
             <span className="type">📍{card.distance_km}km</span>
-            <span className="rating">⭐ {card.rating.toFixed(1)}({card.review_count}件)</span>
+            <span className="rating">
+              ⭐ {card.rating.toFixed(1)}({card.review_count}件)
+            </span>
           </div>
           <div className="address">📌 {card.address}</div>
         </div>
 
         {/* レビュー */}
         <div className="reviews">
-          {card.reviews.slice(0,5).map((review, index) => (
+          {card.reviews.slice(0, 5).map((review, index) => (
             <div key={index} className="review">
               <div className="review-text">{review.comment}</div>
             </div>

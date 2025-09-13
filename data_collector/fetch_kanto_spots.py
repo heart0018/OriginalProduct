@@ -13,6 +13,12 @@ from dotenv import load_dotenv
 import json
 from typing import List, Dict, Optional
 import time
+from utils.request_guard import (
+    get_json,
+    already_fetched_place,
+    mark_fetched_place,
+    get_photo_direct_url,
+)
 
 # .envファイルを読み込み
 load_dotenv()
@@ -127,10 +133,7 @@ class MultiCategoryDataCollector:
 
         try:
             print(f"🔍 検索中: {query}")
-            response = requests.get(self.text_search_url, params=params)
-            response.raise_for_status()
-
-            data = response.json()
+            data = get_json(self.text_search_url, params, ttl_sec=60*60*24*7)
 
             if data.get('status') != 'OK':
                 if data.get('status') != 'ZERO_RESULTS':  # 結果なしは正常なケースとして扱う
@@ -163,10 +166,9 @@ class MultiCategoryDataCollector:
         }
 
         try:
-            response = requests.get(self.place_details_url, params=params)
-            response.raise_for_status()
-
-            data = response.json()
+            if already_fetched_place(place_id):
+                return None
+            data = get_json(self.place_details_url, params, ttl_sec=60*60*24*30)
 
             if data.get('status') != 'OK':
                 print(f"⚠️  詳細取得エラー: {data.get('status')}")
@@ -179,8 +181,9 @@ class MultiCategoryDataCollector:
             return None
 
     def get_photo_url(self, photo_reference: str, max_width: int = 200) -> str:
-        """写真URLを生成"""
-        return f"{self.places_api_base}/photo?maxwidth={max_width}&photo_reference={photo_reference}&key={self.google_api_key}"
+        """キャッシュされた直リンクを返す（無ければ空文字）"""
+        direct = get_photo_direct_url(photo_reference, maxwidth=max_width, ttl_sec=60*60*24*30)
+        return direct or ""
 
     def validate_place_id(self, place_id: str) -> bool:
         """place_idの有効性をチェック"""

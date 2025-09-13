@@ -8,7 +8,8 @@ class Card < ApplicationRecord
   validates :review_count, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :place_id, uniqueness: true, allow_blank: true
   validates :genre, length: { maximum: 32 }
-  validates :image_url, length: { maximum: 256 }
+  # DBの制約（varchar(1000)）に合わせる
+  validates :image_url, length: { maximum: 1000 }
   validates :external_link, length: { maximum: 256 }
   validates :region, length: { maximum: 16 }
   validates :address, length: { maximum: 128 }
@@ -20,17 +21,22 @@ def to_frontend_json(user_location = nil)
     type: self.genre,
     region: region,
     address: address,
+    latitude: latitude,
+    longitude: longitude,
     distance_km: user_location ? calc_distance_km(user_location) : nil,
     rating: rating,
     review_count: review_count,
-    image_url: image_url,
+  image_url: image_url,
     place_id: place_id,
     map_url: if title.present?
             "https://www.google.com/maps/search/?api=1&query=#{ERB::Util.url_encode("#{title} #{address}")}"
              else
             nil
              end,
-    reviews: review_comments.limit(5).map { |review| { id: review.id, comment: review.comment } }
+  # includes(:review_comments) を活かすため、DBクエリを発行しない first(5) を使用
+  reviews: review_comments.first(5).map { |review| { id: review.id, comment: review.comment } },
+  # 互換のために review_comments キーも返す（クライアントがこちらを期待している場合に対応）
+  review_comments: review_comments.first(5).map { |review| { id: review.id, comment: review.comment } }
   }
 end
 

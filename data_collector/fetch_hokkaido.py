@@ -13,6 +13,12 @@ from mysql.connector import Error
 from dotenv import load_dotenv
 from typing import List, Dict, Optional
 import time
+from utils.request_guard import (
+    get_json,
+    already_fetched_place,
+    mark_fetched_place,
+    get_photo_direct_url,
+)
 
 # .env読み込み
 load_dotenv()
@@ -122,9 +128,7 @@ class HokkaidoDataCollector:
         }
         try:
             print(f"🔍 検索: {query}")
-            r = requests.get(self.text_search_url, params=params, timeout=20)
-            r.raise_for_status()
-            data = r.json()
+            data = get_json(self.text_search_url, params, ttl_sec=60*60*24*7)
             if data.get('status') != 'OK':
                 if data.get('status') != 'ZERO_RESULTS':
                     print(f"⚠️ 検索エラー {data.get('status')}")
@@ -149,9 +153,9 @@ class HokkaidoDataCollector:
             'fields': 'name,formatted_address,rating,user_ratings_total,photos,url,types,geometry,opening_hours,reviews'
         }
         try:
-            r = requests.get(self.place_details_url, params=params, timeout=20)
-            r.raise_for_status()
-            data = r.json()
+            if already_fetched_place(place_id):
+                return None
+            data = get_json(self.place_details_url, params, ttl_sec=60*60*24*30)
             if data.get('status') != 'OK':
                 print(f"⚠️ 詳細NG {data.get('status')}")
                 return None
@@ -161,20 +165,19 @@ class HokkaidoDataCollector:
             return None
 
     def get_photo_url(self, photo_reference: str, max_width: int = 200) -> str:
-        return f"{self.places_api_base}/photo?maxwidth={max_width}&photo_reference={photo_reference}&key={self.google_api_key}"
+        direct = get_photo_direct_url(photo_reference, maxwidth=max_width, ttl_sec=60*60*24*30)
+        return direct or ""
 
     def validate_place_id(self, place_id: str) -> bool:
         if not place_id:
             return False
         params = {'place_id': place_id,'key': self.google_api_key,'fields': 'place_id'}
         try:
-            r = requests.get(self.place_details_url, params=params, timeout=10)
-            r.raise_for_status()
-            d = r.json()
+            d = get_json(self.place_details_url, params, ttl_sec=60*60*24*30)
             ok = d.get('status') == 'OK'
             print(f"  {'✅' if ok else '❌'} place_id検証 {place_id[:20]}...")
             return ok
-        except requests.RequestException:
+        except Exception:
             print('  ❌ place_id検証通信失敗')
             return False
 

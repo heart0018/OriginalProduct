@@ -66,4 +66,3 @@ production:
     <<: *primary_production
     database: swipe_app_production_cable
     migrations_paths: db/cable_migrate
-

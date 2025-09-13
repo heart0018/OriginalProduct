@@ -58,22 +58,20 @@
 }
 
 .reviews {
-  max-height: 150px;           /* 全体の高さ制限 */
-  overflow-y: auto;            /* これで上のスクロールバー */
+  max-height: 150px;
+  overflow-y: auto;
   padding-right: 4px;
-  /* display: flex; */
-  /* flex-direction: column; */
   gap: 12px;
   margin-bottom: 5px;
 }
 
 .review {
-  max-height: 120px;           /* 単体レビューの高さ制限 */
-  overflow-y: auto;            /* ここで下のスクロールバー */
+  max-height: 120px;
+  overflow-y: auto;
   padding: 8px 12px;
   background: #f8f9fa;
   border-radius: 8px;
-  border-left: 3px solid #4CAF50;
+  border-left: 3px solid #4caf50;
   margin-bottom: 20px;
 }
 

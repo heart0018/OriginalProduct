@@ -1,4 +1,5 @@
 import { createRef, useEffect, useMemo, useState } from "react";
+import ReactDOM from "react-dom"; // ← 追加
 import TinderCard from "react-tinder-card";
 import "../assets/styles/CardDeck.css";
 import type { Card } from "../types/Card";
@@ -6,10 +7,10 @@ import SwipeCard from "./SwipeCard";
 
 const CardDeck = () => {
   const [cards, setCards] = useState<Card[]>([]);
-  const [offset, setOffset] = useState(0);
+  const [offset, setOffset] = useState(0); // APIを呼び出す際のオフセット
   const LIMIT = 10;
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false); // ローディング状態
+  const [hasMore, setHasMore] = useState(true); // もっと読み込むかどうか
 
   // 各カードに個別のrefを作成
   const childRefs = useMemo(
@@ -35,7 +36,7 @@ const CardDeck = () => {
     setLoading(true);
     try {
       const res = await fetch(
-        `http://localhost:3000/api/v1/cards?limit=${LIMIT}&offset=${offset}`
+        `http://localhost:3001/api/v1/cards?limit=${LIMIT}&offset=${offset}`
       );
       const data = await res.json();
 
@@ -58,7 +59,7 @@ const CardDeck = () => {
     }
   };
 
-  //配列からカードを削除
+  //スワイプの処理
   const handleSwipe = (direction: string, cardId: number) => {
     setCards((prevCards) => prevCards.filter((card) => card.id !== cardId));
   };
@@ -100,7 +101,7 @@ const CardDeck = () => {
             onSwipe={(dir) => handleSwipe(dir, card.id)}
             preventSwipe={["up", "down"]}
             swipeRequirementType="position"
-            swipeThreshold={30}
+            swipeThreshold={50}
             flickOnSwipe={true}
           >
             <SwipeCard card={card} />
@@ -108,30 +109,32 @@ const CardDeck = () => {
         ))}
       </div>
 
-      {/* ボタンコンテナ */}
-      <div className="button-container">
-        <button
-          className="action-button nope-button"
-          onClick={handleReject}
-          title="Nope"
-        >
-          ✕
-        </button>
-        <button
-          className="action-button go-button"
-          onClick={handleGo}
-          title="Go to location"
-        >
-          GO!
-        </button>
-        <button
-          className="action-button like-button"
-          onClick={handleLike}
-          title="Like"
-        >
-          ♥
-        </button>
-      </div>
+      {ReactDOM.createPortal(
+        <div className="button-container button-container--portal">
+          <button
+            className="action-button nope-button"
+            onClick={handleReject}
+            title="Nope"
+          >
+            ✖
+          </button>
+          <button
+            className="action-button go-button"
+            onClick={handleGo}
+            title="Go to location"
+          >
+            <span className="btn-label">GO!</span>
+          </button>
+          <button
+            className="action-button like-button"
+            onClick={handleLike}
+            title="Like"
+          >
+            ❤
+          </button>
+        </div>,
+        document.body
+      )}
 
       {loading && (
         <div className="loading-indicator">次のカードを読み込み中...</div>

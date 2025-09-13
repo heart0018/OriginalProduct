@@ -63,3 +63,5 @@ group :test do
 end
 # Gemfile の一番下に追記
 gem "rack-cors"
+gem "googleauth"   # GoogleのIDトークン検証
+gem "jwt", "~> 2.8" # アプリ用JWT発行/検証

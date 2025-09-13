@@ -1,12 +1,12 @@
 // src/App.tsx
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import SwipePage from './pages/SwipePage';
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import AuthPage from "./pages/AuthPage";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/swipe" element={<SwipePage />} />
+        <Route path="/" element={<AuthPage />} />
       </Routes>
     </Router>
   );
