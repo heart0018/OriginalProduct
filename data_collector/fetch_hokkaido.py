@@ -27,10 +27,11 @@ class HokkaidoDataCollector:
     def __init__(self):
         self.google_api_key = os.getenv('GOOGLE_API_KEY')
         self.mysql_config = {
-            'host': 'localhost',
-            'user': 'Haruto',
+            'host': os.getenv('MYSQL_HOST', 'localhost'),
+            'user': os.getenv('MYSQL_USER', 'Haruto'),
             'password': os.getenv('MYSQL_PASSWORD'),
-            'database': 'swipe_app_development',
+            'database': os.getenv('MYSQL_DB', 'swipe_app_development'),
+            'port': int(os.getenv('MYSQL_PORT', '3306')),
             'charset': 'utf8mb4'
         }
         self.places_api_base = 'https://maps.googleapis.com/maps/api/place'
@@ -283,7 +284,11 @@ class HokkaidoDataCollector:
         try:
             conn = mysql.connector.connect(**self.mysql_config)
             if conn.is_connected():
-                print('✅ DB接続')
+                try:
+                    cur = conn.cursor(); cur.execute('SELECT DATABASE()'); (current_db,) = cur.fetchone(); cur.close()
+                except Exception:
+                    current_db = self.mysql_config.get('database')
+                print(f"✅ DB接続 host={self.mysql_config.get('host')} db={current_db} user={self.mysql_config.get('user')}")
                 return conn
         except Error as e:
             print(f'❌ DB接続失敗: {e}')

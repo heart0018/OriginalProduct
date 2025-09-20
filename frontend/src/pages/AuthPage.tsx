@@ -9,7 +9,7 @@ const AuthPage = () => {
   const [user, setUser] = useState<User | null>(null);
   return (
     <Auth onAuthenticated={setUser}>
-      <SwipePage /* userを使わないなら渡さなくてOK */ />
+       <SwipePage /* userを使わないなら渡さなくてOK */ />
     </Auth>
   );
 };
